@@ -35,7 +35,7 @@ receiver_str += receiver
 message = sender_str + '\n' + receiver_str + '\n'
 message += """Subject: subscribe request
 
-I wanna subscribe this ML.
+Subscribe for registered people of osc12
 """
 
 # managed to send mail
