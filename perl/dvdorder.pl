@@ -3,7 +3,6 @@
 
 use Mail::IMAPClient;
 use Term::ReadKey;
-use MIME::Lite;
 use Net::SMTP;
 
 use strict;
@@ -15,34 +14,34 @@ sub send_mail {
     #########-- Enter the Details here --###################################
 
     my $sender             = shift;
-    my $reciever           = shift;
+    my $receiver           = shift;
     my $subject            = shift;
     my $body               = shift;
     my $mailhost           = 'smtp.novell.com';
     my $sender_name        = 'Max Lin';
-    my $password           = 'xxxxxxxx';
+    my $password           = 'xxx';
 
 
     my $smtp = new Net::SMTP(
         $mailhost,
         Port    =>      25,
         #Timeout =>      10
-        Debug   =>      1
+        Debug   =>      0
     );
     $smtp->auth ( $sender, $password ) or die "Could not authenticate $!";
 
-    print "sending to $reciever\n";
+    print "sending to $receiver\n";
 
 #  -- Enter sender mail address. --
     $smtp->mail($sender);
 
 #  -- Enter recipient mails address. --
-    $smtp->recipient($reciever);
+    $smtp->recipient($receiver);
 
     $smtp->data();
 
 # -- This part creates the SMTP headers you see. --
-    $smtp->datasend("To: <$reciever> \n");
+    $smtp->datasend("To: <$receiver> \n");
     $smtp->datasend("From: $sender_name <$sender> \n");
     $smtp->datasend("Content-Type: text/plain \n");
     $smtp->datasend("Subject: Re: $subject");
@@ -61,8 +60,8 @@ sub send_mail {
 
 my $imap = Mail::IMAPClient->new(
     Server   => 'imap.googlemail.com',
-    User     => 'xxxxxxxx@xxx.xxx',
-    Password => 'xxxxxxxxxxxxxxxx',
+    User     => 'xxx@xxx.xx',
+    Password => 'xxx',
     Ssl      => 1,
     Uid      => 1,
     Port => 993
@@ -133,7 +132,7 @@ sub schedule_file {
     $from= $imap->get_header($msg, 'From');
     $subject = $imap->get_header($msg, 'Subject');
 
-    $text = "Thanks, your order has been scheduled and will be processed soon.\nWe will ship based on availabilty of what we have and thus might change your request.\n\nNote that the openSUSE project will only cover cost of material and transportation,\nyou have to take care of any customs or tax costs.\n\nAndreas\n-- \n";
+    $text = "Thanks, your order has been scheduled and will be processed soon.\nWe will ship based on availabilty of what we have and thus might change your request.\n\nNote that the openSUSE project will only cover cost of material and transportation,\nyou have to take care of any customs or tax costs.\n\nNote. We decided decrease european quantities by 50%, therefore the numbers that you received is not as expected.\n\nCheers,\nMax\n\n-- \n";
     open SIGNATURE, "< $ENV{HOME}/.signature" 
       or die ("could not read $ENV{HOME}/.signature: $?");
     while ($line = <SIGNATURE>) {
@@ -142,14 +141,7 @@ sub schedule_file {
     }
     close SIGNATURE;
 
-    #$send_msg = MIME::Lite->new (To => $from,
-    #			From => 'mlin@suse.com',
-    #			Subject => "Re: $subject",
-    #			Data => $text
-    #			);
-    #$send_msg->send;
-
-    send_mail('xxxx@xxx.com', $from, $subject, $text);
+    send_mail('xxx@xx.xx', $from, $subject, $text);
     printf "Scheduled...\n"
 }
 
@@ -200,15 +192,7 @@ EOF
     }
     close SIGNATURE;
 
-    #$send_msg = MIME::Lite->new (To => $from,
-    #			 From => 'mlin@suse.com',
-    #			 Subject => "Re: $subject",
-    #			 Type => 'TEXT',
-    #			 Data => $text
-    #			);
-    #$send_msg->send;
-    
-    send_mail('xxxx@xxx.com', $from, $subject, $text);
+    send_mail('xxx@xxx.xx', $from, $subject, $text);
     printf "Rejected...\n"
 }
 
@@ -252,15 +236,7 @@ EOF
     }
     close SIGNATURE;
 
-    #$send_msg = MIME::Lite->new (To => $from,
-    #			 From => 'mlin@suse.com',
-    #			 Subject => "Re: $subject",
-    #			 Type => 'TEXT',
-    #			 Data => $text
-    #			);
-    #$send_msg->send;
-
-    send_mail('xxxx@xxx.com', $from, $subject, $text);
+    send_mail('xxx@xx.xx', $from, $subject, $text);
     printf "OOm...\n"
 }
 
