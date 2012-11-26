@@ -29,5 +29,5 @@ f = open(filename)
 
 for address in iter(f):
     sendMailFunc.sendSubscribe(address, dest)
-    time.sleep(3)
+    time.sleep(5)
 f.close()
