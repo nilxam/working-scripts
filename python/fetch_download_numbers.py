@@ -54,16 +54,20 @@ def fetch_data(period, date):
     filename = write_pagetitles_xml(period, date, data)
     return filename
 
-def parse_data(data, pagetitles_file):
+def parse_data(data, pagetitles_file, show_in_screen):
     print_visits = False
     for child in data:
         if child.tag == 'label':
             if re.search(r"\Wtorrent$", child.text.strip()) or re.search(r"\Wiso$", child.text.strip()):
+                if show_in_screen == True:
+                    print child.text.strip() + ':',
                 pagetitles_file.write(child.text.strip() + ':')
                 print_visits = True
         elif child.tag == 'row' or child.tag == 'subtable':
-            parse_data(child, pagetitles_file)
+            parse_data(child, pagetitles_file, show_in_screen)
         elif print_visits == True and child.tag == 'nb_visits':
+            if show_in_screen == True:
+                print child.text.strip()
             pagetitles_file.write(child.text.strip() + '\n')
             print_visits = False
 
@@ -95,9 +99,13 @@ tree.getroot()
 root = tree.getroot()
 
 ### Started parsing xml ###
+show_in_screen = False
+show_op = raw_input('Ready parsing the xml data, would you like shows the data in the screen?[Y/N]')
+if show_op[0] == 'Y' or show_op[0] == 'y':
+    show_in_screen = True
 print 'Start parsing the xml data and store the result to %s.csv ' % filename
 pagetitles_file = open(filename + '.csv','w')
 for child in root:
-    parse_data(child, pagetitles_file)
+    parse_data(child, pagetitles_file, show_in_screen)
 pagetitles_file.close()
 print 'Parse the xml data done!'
