@@ -55,6 +55,7 @@ def fetch_data(period, date):
     return filename
 
 def parse_data(data, pagetitles_file, show_in_screen):
+    # The condition of print visit numbers
     print_visits = False
     for child in data:
         if child.tag == 'label':
@@ -65,7 +66,7 @@ def parse_data(data, pagetitles_file, show_in_screen):
                 print_visits = True
         elif child.tag == 'row' or child.tag == 'subtable':
             parse_data(child, pagetitles_file, show_in_screen)
-        elif print_visits == True and child.tag == 'nb_visits':
+        elif child.tag == 'nb_visits' and print_visits == True:
             if show_in_screen == True:
                 print child.text.strip()
             pagetitles_file.write(child.text.strip() + '\n')
